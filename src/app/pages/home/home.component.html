@@ -1,3 +1,35 @@
 <h2>Olympic games app</h2>
 <hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+<p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+<ng-container *ngIf="(olympics$ | async) as olympics">
+	<p>{{ olympics.length }} enregistrement(s) chargé(s)</p>
+
+	<div *ngIf="olympics.length === 0">
+		<p>Aucune donnée disponible.</p>
+	</div>
+
+	<ul *ngIf="olympics.length > 0" class="countries">
+		<li *ngFor="let country of olympics" class="country">
+			<h3>{{ country.country }} (id: {{ country.id }})</h3>
+			<table class="participations">
+				<thead>
+					<tr>
+						<th>Année</th>
+						<th>Ville</th>
+						<th>Médailles</th>
+						<th>Athlètes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let p of country.participations">
+						<td>{{ p.year }}</td>
+						<td>{{ p.city }}</td>
+						<td>{{ p.medalsCount }}</td>
+						<td>{{ p.athleteCount }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</li>
+	</ul>
+</ng-container>

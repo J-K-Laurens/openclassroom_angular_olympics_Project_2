@@ -1,31 +1,47 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Olympic } from '../models/Olympic';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
-  private olympics$ = new BehaviorSubject<any>(undefined);
+  private olympics$ = new BehaviorSubject<Olympic[]>([]);
 
   constructor(private http: HttpClient) {}
 
-  loadInitialData() {
-    return this.http.get<any>(this.olympicUrl).pipe(
-      tap((value) => this.olympics$.next(value)),
-      catchError((error, caught) => {
-        // TODO: improve error handling
-        console.error(error);
-        // can be useful to end loading state and let the user know something went wrong
-        this.olympics$.next(null);
-        return caught;
+  loadInitialData(): Observable<Olympic[]> {
+    return this.http.get<Olympic[]>(this.olympicUrl).pipe(
+      tap((value) => {
+        if (!value || value.length === 0) {
+          throw new Error('No Olympic data available');
+        }
+        this.olympics$.next(value);
+      }),
+      catchError((error) => {
+        console.error('Error loading data:', error);
+        // Gérer les différents types d'erreurs
+        if (error.status === 404) {
+          throw new Error('Data not found. Please check your connection.');
+        } else if (error.status === 0) {
+          throw new Error('Network error. Please check your internet connection.');
+        } else {
+          throw new Error('An unexpected error occurred. Please try again later.');
+        }
       })
     );
   }
 
-  getOlympics() {
+  getOlympics(): Observable<Olympic[]> {
     return this.olympics$.asObservable();
+  }
+
+  getCountryById(id: number): Observable<Olympic | undefined> {
+    return this.olympics$.pipe(
+      map((olympics) => olympics.find((olympic) => olympic.id === id))
+    );
   }
 }
