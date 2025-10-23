@@ -5,12 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { NgChartsModule } from 'ng2-charts';
+import { DetailComponent } from './pages/detail/detail.component';
+import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NotFoundComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgChartsModule],
-  providers: [],
+  declarations: [AppComponent, HomeComponent, NotFoundComponent, DetailComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, BaseChartDirective],
+  providers: [provideCharts(withDefaultRegisterables())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

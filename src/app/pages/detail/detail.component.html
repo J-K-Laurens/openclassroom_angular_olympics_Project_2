@@ -1,0 +1,28 @@
+<div class="detail-container" *ngIf="country$ | async as country">
+    <div class="country-header">
+        <h1>{{ country.country }}</h1>
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-box">
+            <h3>Number of entries</h3>
+            <p>{{ country.participations.length }}</p>
+        </div>
+        <div class="stat-box">
+            <h3>Total number medals</h3>
+            <p>{{ getTotalMedals(country) }}</p>
+        </div>
+        <div class="stat-box">
+            <h3>Total number of athletes</h3>
+            <p>{{ getTotalAthletes(country) }}</p>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <canvas #lineChart style="width: 100%; height: 100%;"></canvas>
+    </div>
+
+    <div class="back-button">
+        <button (click)="goBack()">Back</button>
+    </div>
+</div>
