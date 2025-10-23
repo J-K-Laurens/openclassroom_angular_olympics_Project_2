@@ -81,18 +81,30 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Calcule le nombre total de médailles pour un pays
+   * @param country - Les données du pays olympique
+   * @returns Le nombre total de médailles gagnées sur toutes les participations
+   */
   getTotalMedals(country: Olympic): number {
     return country.participations.reduce((sum, p) => sum + p.medalsCount, 0);
   }
 
+  /**
+   * Calcule le nombre total d'athlètes pour un pays
+   * @param country - Les données du pays olympique
+   * @returns Le nombre total d'athlètes sur toutes les participations
+   */
   getTotalAthletes(country: Olympic): number {
     return country.participations.reduce((sum, p) => sum + p.athleteCount, 0);
   }
 
-  goBack(): void {
-    this.router.navigate(['/']);
-  }
-
+  /**
+   * Crée et configure le graphique linéaire pour afficher l'évolution des médailles
+   * Gère la destruction des instances précédentes pour éviter les fuites mémoire
+   * @param country - Les données du pays à afficher
+   * @private
+   */
   private createChart(country: Olympic): void {
     const canvas = this.chartCanvas?.nativeElement;
     if (!canvas) {
@@ -170,5 +182,12 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     
     this.chart = new Chart(ctx, config);
+  }
+
+  /**
+   * Retourne à la page d'accueil
+   */
+  goBack(): void {
+    this.router.navigate(['/']);
   }
 }

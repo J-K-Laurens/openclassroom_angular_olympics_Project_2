@@ -5,12 +5,10 @@
 
   <div class="stats-container">
     <div class="stat-box">
-      <span class="label">Number of JOs </span>
-      <span class="number">{{ (olympics$ | async)?.length }}</span>
+      <span class="label">Number of JOs {{ (olympics$ | async)?.length }}</span>
     </div>
     <div class="stat-box">
-      <span class="label">Number of countries </span> 
-      <span class="number">{{ countries.length }}</span>
+      <span class="label">Number of countries {{ countries.length }}</span> 
     </div>
   </div>
 

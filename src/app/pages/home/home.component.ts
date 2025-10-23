@@ -82,13 +82,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.selectedCountry$ = this.olympicService.getCountryById(1); 
   }
 
-  // Écoute les événements de redimensionnement de la fenêtre
+  /**
+   * Gère l'adaptation du graphique lors du redimensionnement de la fenêtre
+   * Cette fonction est déclenchée à chaque événement de redimensionnement
+   */
   @HostListener('window:resize')
   onResize() {
     this.updateChartPadding();
   }
 
-  // Met à jour le padding du graphique en fonction de la taille de l'écran
+  /**
+   * Met à jour dynamiquement le padding et la taille des polices du graphique
+   * en fonction de la taille de l'écran pour une meilleure expérience responsive
+   * @private
+   */
   private updateChartPadding() {
     // Définit le padding en fonction de la largeur de l'écran (140px pour desktop, 100px pour mobile)
     const padding = window.innerWidth > 768 ? 140 : 100;
@@ -182,6 +189,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Navigue vers la page de détail du pays sélectionné
+   * @param id - L'identifiant unique du pays sélectionné
+   */
   selectCountry(id: number): void {
     this.selectedCountry$ = this.olympicService.getCountryById(id);
     this.router.navigate(['/detail', id]);
